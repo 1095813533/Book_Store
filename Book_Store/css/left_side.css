@@ -1,0 +1,114 @@
+body{ background:#fff;}
+
+h2 {
+    position: relative;
+    top:-700px;
+    left: -480px;
+    width: 400px;
+    margin: 0 auto 10px auto;
+    font-size: 18px;
+    font-family: "微软雅黑";
+    color: rgb(219, 30, 30);
+
+}
+
+.tab {
+    position: absolute;
+    top:430px;
+    left:80px;
+    width: 250px;
+    height: 500px;
+    overflow: hidden;
+    margin: 0 auto 0px auto;
+    font-family: Arial;
+}
+
+.tab-nav {
+
+    height: 30px;
+
+    overflow: hidden;
+
+    background: #f5f5f5;
+
+}
+
+.tab-nav a {
+
+    display: block;
+
+    float: left;
+
+    width: 50px;
+
+    height: 30px;
+
+    line-height: 30px;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    color: #999;
+
+}
+
+.tab-nav a.current {
+
+    background: #ec0d0d;
+
+    color: #fff;
+
+}
+
+.tab-con {  /*内容框*/
+
+    position: relative;
+
+    width: 250px;
+
+    height: 500px;
+
+    overflow: hidden;
+
+    background: #ebebeb;
+
+}
+
+.tab-con-item {
+
+    display: none;
+
+    width: 250px;
+
+    height: 800px;
+
+    line-height: 40px;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    color: rgb(32, 12, 12);
+
+}
+
+
+.news
+{
+    position: absolute;
+    top:200px;
+    left: 80px;
+    font-size: 15px;
+
+}
+.news h3{
+    margin:0px;
+    font-size: 18px;
+    color: rgb(219, 30, 30);
+}
+.news ul
+{
+    list-style: none;
+    text-align: center;
+}

@@ -1,0 +1,139 @@
+.logo {
+    position: relative;
+    left: 180px;
+    top: 5px;
+}
+
+form
+
+/*搜索框*/
+    {
+    position: relative;
+    width: 500px;
+    margin: 0 auto;
+    top: -105px;
+    left: -50px;
+}
+
+.search input {
+    line-height: 20px;
+    font-size: 15px;
+    width: 400px;
+    height: 20px;
+    float: left;
+    padding: 10px 30px 10px 18px;
+    border: 2px solid red;
+    border-radius: 5px;
+    outline: none;
+    color: rgb(22, 12, 5);
+}
+
+.search button {
+    position: relative;
+    top: 0;
+    right: 40px;
+    width: 42px;
+    height: 43px;
+    border: none;
+    background: red;
+    border-radius: 0 5px 5px 0;
+    /*设置边界圆角*/
+    cursor: pointer;
+}
+
+.search button:before {
+    content: "\f002";
+    font-family: FontAwesome;
+    font-size: 18px;
+    color: rgb(248, 248, 248);
+}
+
+.shopcar a {
+    position: relative;
+    right: 40px;
+    font-size: 23px;
+    top: -140px;
+    background-color: red;
+    border-radius: 5px 5px 5px 5px;
+    /*设置边界圆角*/
+}
+
+.fa-shopping-cart {
+    font-size: 23px;
+    color: white;
+}
+
+.shopcar a:hover {
+    background-color: rgb(180, 132, 132);
+}
+
+.car-font:hover {
+    color: rgb(21, 22, 17);
+}
+
+.order a {
+    position: relative;
+    right: -1030px;
+    font-size: 23px;
+    top: -170px;
+    background-color: red;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.order a:hover {
+    background-color: rgb(180, 132, 132);
+}
+
+.font {
+    color: white;
+}
+
+.font:hover {
+    color: rgb(16, 17, 14);
+}
+
+.nav_top {
+    position: absolute;
+    left: 120px;
+    top: 120px;
+}
+
+.nav_top li {
+    float: left;
+    display: inline-block;
+    text-align: center;
+    font-size: 20px;
+    width: 10%;
+    height: 30px;
+    border-bottom: 3px solid red;
+    color: black;
+}
+
+ul {
+    float: left;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    zoom: 1;
+}
+.tianqi
+{
+    position: relative;
+    top:-210px;
+    right: -1200px;
+}
+.sign 
+{
+    position: absolute;
+    top: 40px;
+    left:390px;
+    color: red;
+}
+.sign span
+{
+    display: block;
+    margin: 5px;
+    font-size: 20px;
+    background-color: red;
+    border-radius: 5px 5px 5px 5px;
+}

@@ -1,0 +1,43 @@
+
+.right_side
+{
+    position: relative;
+    top:-1140px;
+    right: -1050px;
+}
+h1
+{
+    position: absolute;
+    top:400px;
+    right: -10px;
+    width: 400px;
+    margin: 0 auto 10px auto;
+    font-size: 18px;
+    font-family: "微软雅黑";
+    color: rgb(219, 30, 30);
+
+}
+.newbook
+{
+    position: absolute;
+    top:180px;
+    right: 140px;
+    font-size: 15px;
+
+}
+.newbook h4{
+    margin: 0px;
+    color: rgb(219, 30, 30);
+    font-size: 18px;
+}
+.newbook img
+{
+    width: 110px;
+    height: 110px; 
+    margin: 0px 1px 1px 60px;
+}
+.newbook span
+{
+    display: block;
+    text-align: center;
+}

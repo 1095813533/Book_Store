@@ -1,0 +1,277 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>登录</title>
+    <!-- Meta tag Keywords -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="keywords"
+          content="Triple Forms Responsive Widget,Login form widgets, Sign up Web forms , Login signup Responsive web form,Flat Pricing table,Flat Drop downs,Registration Forms,News letter Forms,Elements" />
+    <script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+    </script>
+    <!-- Meta tag Keywords -->
+    <!-- css files -->
+    <link rel="stylesheet" href="~/css/login.css" type="text/css" media="all" />
+    <!-- Style-CSS -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Font-Awesome-Icons-CSS -->
+    <!-- //css files -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <!--toastr样式-->
+    <link href="https://cdn.bootcdn.net/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+</head>
+
+<body>
+    <div class="main-bg" id="mian">
+        <!-- title -->
+
+        <h1><img src="~/image/logo.png" style="width: 200px; height: 120px; position: relative; top: 50px;">登录</h1>
+        <!-- //title -->
+        <div class="sub-main-w3">
+            <div class="image-style">
+
+            </div>
+            <!-- vertical tabs -->
+            <div class="vertical-tab">
+                <div id="section1" class="section-w3ls">
+                    <input type="radio" name="sections" id="option1" checked>
+                    <label for="option1" class="icon-left-w3pvt">
+                        <span class="fa fa-user-circle"
+                              aria-hidden="true"></span>登录
+                    </label>
+                    <article>
+                        <!--name=awsl&password=admin123-->
+                        <form id="login-form">
+                            <h3 class="legend">账号登录</h3>
+                            <div class="input">
+                                <span class="fa fa-user-o" aria-hidden="true"></span>
+                                <input id="login-name" type="text" v-model="logindata.name" placeholder="用户名" name="name" required />
+                            </div>
+                            <div class="input">
+                                <span class="fa fa-key" aria-hidden="true"></span>
+                                <input id="login-password" type="password" v-model="logindata.password" placeholder="密码" name="password"
+                                       required />
+
+                            </div>
+                            <lavel><input type="radio" name="user-type" value="user" checked>用户</lavel>
+                            <lavel><input type="radio" name="user-type" value="admin">管理员</lavel>
+                            <div type="button" class="btn submit login-btn" style="width: 506px">登 录</div>
+                            <a href="#" id="forget-password" class="bottom-text-w3ls">忘记密码?</a>
+                        </form>
+                    </article>
+                </div>
+                <div id="section2" class="section-w3ls">
+                    <!--name=awsl&password=admin123&confirmPassword=admin123&phone=13413122113&email=123%40foxmail.com-->
+                    <input type="radio" name="sections" id="option2">
+                    <label for="option2" class="icon-left-w3pvt">
+                        <span class="fa fa-pencil-square"
+                              aria-hidden="true"></span>注册
+                    </label>
+                    <article>
+                        <form id="register-form">
+                            <h3 class="legend">注册帐户</h3>
+                            <div class="input">
+                                <span class="fa fa-user-o" aria-hidden="true"></span>
+                                <input id="reg-name" type="text" v-model="registerdata.name" placeholder="用户名" name="name" required />
+                            </div>
+                            <div class="input">
+                                <span class="fa fa-key" aria-hidden="true"></span>
+                                <input id="reg-password" class="password" type="password" v-model="registerdata.password" placeholder="密码"
+                                       name="password" required />
+                            </div>
+                            <div class="input">
+                                <span class="fa fa-key" aria-hidden="true"></span>
+                                <input id="reg-confirmpassword" class="confirmPassword" type="password" v-model="registerdata.confirmPassword"
+                                       placeholder="确认密码" name="confirmPassword" required />
+                            </div>
+                            <div class="input">
+                                <span class="fa fa-mobile-phone" aria-hidden="true"></span>
+                                <input id="reg-phone" type="phone" v-model="registerdata.phone" placeholder="手机" name="phone"
+                                       required />
+                            </div>
+                            <div class="input">
+                                <span class="fa fa-envelope-o" aria-hidden="true"></span>
+                                <input id="reg-email" type="email" v-model="registerdata.email" placeholder="邮箱" name="email"
+                                       required />
+                            </div>
+                            <div type="button" class="btn submit register-btn" style="width: 506px">注 册</div>
+                        </form>
+                    </article>
+                </div>
+                <div id="section3" class="section-w3ls">
+                    <!--phone=13413122113-->
+                    <input type="radio" name="sections" id="option3">
+                    <label for="option3" class="icon-left-w3pvt">
+                        <span class="fa fa-lock"
+                              aria-hidden="true"></span>忘记密码?
+                    </label>
+                    <article>
+                        <form id="last-form">
+                            <h3 class="legend last">重置密码</h3>
+                            <p class="para-style">请在下面输入您的手机号码，我们将会把您的密码重置为123456。</p>
+                            <div class="input">
+                                <span class="fa fa-user-o" aria-hidden="true"></span>
+                                <input id="forget-name" type="name" v-model="forgetdata.phone" placeholder="用户名" name="name" required />
+                            </div>
+                            <div class="input">
+                                <span class="fa fa-envelope-o" aria-hidden="true"></span>
+                                <input id="forget-email" type="email" v-model="forgetdata.email" placeholder="邮箱" name="email" required />
+                            </div>
+                            <div type="button" class="btn submit last-btn" style="width: 506px">提交</div>
+                        </form>
+                    </article>
+                </div>
+            </div>
+            <!-- //vertical tabs -->
+            <div class="clear"></div>
+        </div>
+        <!-- copyright -->
+        <div class="copyright">
+            <h2>
+                Copyright &copy; 2019 - {{nowYear}} 版权所有| by
+                <a href="#">ChanKwongwing</a>
+            </h2>
+        </div>
+        <!-- //copyright -->
+    </div>
+
+</body>
+<!-- script   -->
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+<!-- JavaScript 代码需要放在尾部（指定的HTML元素之后） -->
+<script>
+	new Vue({
+		el: '#mian',
+		data: {
+			nowYear: new Date().getFullYear(),
+			logindata: {
+				name: "",
+				password: ""
+			},
+			registerdata: {
+				name: "",
+				password: "",
+				confirmPassword: "",
+				phone: "",
+				email: ""
+			},
+			forgetdata: {
+				phone: "",
+				email: ""
+			}
+		}
+	});
+</script>
+<script>
+	$('#forget-password').click(function () {
+		$('#option3').prop('checked', true);
+	})
+</script>
+<script>
+    $('.login-btn').click(function () {
+        //alert($("#login-form").serialize());
+        if ($("#login-name").val() == "") {
+            toastr.error("请填写用户名");
+            return;
+        }
+        else if ($("#login-password").val() == "") {
+            toastr.error("请填写密码");
+            return;
+        }
+		$.ajax({
+			// 请求方式
+			type: "POST",
+			// 预期服务器返回的数据类型
+			dataType: "text", // json,html,text等等
+			// 发送信息至服务器时内容编码类型
+			// contentType: "application/json",
+			// 提交路径
+			url: "/Home/userlogin",
+			async: false,
+			data: $("#login-form").serialize(),
+			// 如果提交成功，返回的值为state
+			success: function (state) {
+			    if (state === "1") { toastr.success('登录成功'); window.location.href = "/Home/index"; }
+			    else if (state === "2") { toastr.success('登录成功'); window.location.href = "/Home/admin_order_edit"; }
+			    else { toastr.error('用户名或密码错误'); }
+			},
+			error: function () {
+				alert('error');
+			}
+		})
+	})
+	$('.register-btn').click(function () {
+		if ($('.confirmPassword').val() != $('.password').val()) {
+		    toastr.error('密码不一致');
+			return;
+		}
+		if ($("#reg-name").val() == "" || $("#reg-password").val() == "" || $("#reg-confirmpassword").val() == "" || $("#reg-phone").val() == "" || $("#reg-email").val() == "") {
+		    toastr.error("请填写相关字段");
+		    return;
+		}
+		// alert($("#register-form").serialize());
+		$.ajax({
+			// 请求方式
+			type: "POST",
+			// 预期服务器返回的数据类型
+			dataType: "text", // json,html,text等等
+			// 发送信息至服务器时内容编码类型
+			// contentType: "application/json",
+			// 提交路径
+			url: "/Home/userreg",
+			async: false,
+			data: $("#register-form").serialize(),
+			// 如果提交成功，返回的值为state
+			success: function (state) {
+			    if (state === "1") { toastr.success('注册成功'); window.location.href = "/Home/index"; }
+			    else { toastr.error('该用户名已被使用'); }
+			},
+			error: function () {
+				alert('error');
+			}
+		})
+	})
+	$('.last-btn').click(function () {
+	    //alert($("#last-form").serialize());
+	    if ($("#forget-name").val() == "" || $("#forget-email").val() == "") {
+	        toastr.error("请填写相关字段");
+	        return;
+	    }
+		$.ajax({
+			// 请求方式
+			type: "POST",
+			// 预期服务器返回的数据类型
+			dataType: "text", // json,html,text等等
+			// 发送信息至服务器时内容编码类型
+			// contentType: "application/json",
+			// 提交路径
+			url: "/Home/userreset",
+			async: false,
+			data: $("#last-form").serialize(),
+			// 如果提交成功，返回的值为state
+			success: function (state) {
+			    if (state === "1") { toastr.success('重置成功,请重新登陆'); window.location.href = "/Home/login"; }
+			    else { toastr.error('用户名或邮箱错误'); }
+			},
+			error: function () {
+				alert('error');
+			}
+		})
+	})
+</script>
+<!-- //script -->
+
+</html>

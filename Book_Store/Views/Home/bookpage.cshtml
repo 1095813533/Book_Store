@@ -1,0 +1,244 @@
+﻿
+@{
+    Layout = null;
+}
+@using Book_Store.Models
+@model IEnumerable<Book_Store.Models.book>
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>购物</title>
+    <link rel="stylesheet" href="~/css/good_page.css" />
+    <!--引入jquery-->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <!--引入bootstrap-->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+@{
+    var item = Model.ElementAt(0);
+}
+<body>
+    <!--网页的形式为http://127.0.0.1:5500/good_page.html?book_id=1-->
+    <!--根据book_id的值去搜索对应的图书-->
+    <div id="div_box">
+        <div class="wrap">
+            <div class="smallImg imgBox">
+                <img src=@item.image_url width="430px" height="430px" />
+            </div>
+        </div>
+
+        <div id="div_box-right">
+            <div id="div_box-right-1">
+                <span id="div_box-right-1-span_1" class="good_name">这里是购买书籍名称</span>
+            </div>
+            <div id="div_box-right-2">
+                <span id="div_box-right-2-span_1">价格</span>
+                <span id="div_box-right-2-span_2">
+                    <span style="font-weight: 200;">￥</span><span class="good_price1"></span>
+                </span>
+            </div>
+
+            <div id="div_box-right-3">
+                <span id="div_box-right-3-span_1">数量</span>
+                <span id="div_box-right-2-span_2">
+                    <div class="container-fluid">
+                        <ul style="list-style-type: none;">
+                            <li>
+                                <button>-</button>
+                                <strong class="good_count">1</strong>
+                                <button>+</button>
+                                <intput type="text" style="display: none">
+                                    单价：<em class="good_price2"></em>
+                                </intput>
+                                总计：<span class="good_price3"></span>
+                            </li>
+                        </ul>
+                </span>
+            </div>
+            <div id="div_box-right-8">
+                <div id="div_box-right-8-div-1" class="buy"><span>立即购买</span></div>
+                <div id="div_box-right-8-div-2" class="push_shoppingcar">
+                    <svg t="1588664645155" style="width:1em;height: 1em;" viewBox="0 0 1024 1024" version="1.1"
+                         xmlns="http://www.w3.org/2000/svg" p-id="7377" width="200" height="200">
+                        <path d="M347.136 783.36q19.456 0 36.864 7.168t30.72 19.968 20.48 30.208 7.168 36.864-7.168 36.864-20.48 30.208-30.72 20.48-36.864 7.68q-20.48 0-37.376-7.68t-30.208-20.48-20.48-30.208-7.168-36.864 7.168-36.864 20.48-30.208 30.208-19.968 37.376-7.168zM773.12 785.408q19.456 0 37.376 7.168t30.72 19.968 20.48 30.208 7.68 36.864-7.68 36.864-20.48 30.208-30.72 20.48-37.376 7.68-36.864-7.68-30.208-20.48-20.48-30.208-7.68-36.864 7.68-36.864 20.48-30.208 30.208-19.968 36.864-7.168zM945.152 203.776q28.672 0 44.544 7.68t22.528 18.944 6.144 24.064-3.584 22.016-12.8 37.888-22.016 62.976-24.064 68.096-17.92 53.248q-13.312 40.96-33.792 56.832t-50.176 15.872l-34.816 0-66.56 0-87.04 0-95.232 0-253.952 0 15.36 92.16 516.096 0q49.152 0 49.152 41.984 0 20.48-9.728 35.328t-38.4 14.848l-49.152 0-95.232 0-117.76 0-119.808 0-98.304 0-56.32 0q-20.48 0-34.304-9.216t-23.04-24.064-14.848-32.256-8.704-32.768q-1.024-6.144-5.632-29.696t-11.264-58.88-14.848-78.848-16.384-87.552q-19.456-103.424-44.032-230.4l-76.8 0q-15.36 0-25.6-7.68t-16.896-18.432-9.216-23.04-2.56-22.528q0-20.48 13.824-33.792t37.376-13.312l22.528 0 20.48 0 25.6 0 34.816 0q20.48 0 32.768 6.144t19.456 15.36 10.24 19.456 5.12 17.408q2.048 8.192 4.096 23.04t4.096 30.208q3.072 18.432 6.144 38.912l700.416 0z"
+                              fill="#ffffff" p-id="7378"></path>
+                    </svg>
+                    加入购物车
+                </div>
+            </div>
+        </div>
+
+        <script>
+            window.onload = function () {
+                var lis = document.querySelectorAll("li");
+                var p = document.querySelector("p");
+
+                for (var i = 0; i < lis.length; i++) {
+                    count(i);
+                }
+
+                //计数的函数，参数为每一个Li对应的下标（在函数里通过下标去取到对应的Li）
+                function count(n) {
+                    //获取到对应li里的相关元素
+                    var btns = lis[n].querySelectorAll('button');
+                    var strong = lis[n].querySelector('strong');
+                    var span = lis[n].querySelector('span');
+                    var em = lis[n].querySelector('em');
+                    // console.log(em);
+                    var num = 1; //对应选择到商品的数量
+                    //给+添加点击事件
+                    btns[1].onclick = function () {
+                        /*
+                         * 1、商品的数量要累加
+                         * 2、小计的值也要累加
+                         * 3、改变下面p标签里的内容
+                         */
+
+                        num++;
+
+                        strong.innerHTML = num;
+                        span.innerHTML = num * parseFloat(em.innerHTML) + '元';
+                    }
+
+                    //给-添加点击事件
+                    btns[0].onclick = function () {
+                        /*
+                         * 1、商品的数量要累加
+                         * 2、小计的值也要累加
+                         * 3、改变下面p标签里的内容
+                         */
+
+                        num--;
+
+                        /*
+                         * 减到0的时候就不能再减了
+                         */
+                        if (num < 1) {
+                            num = 1;
+                        }
+
+                        strong.innerHTML = num;
+                        span.innerHTML = num * parseFloat(em.innerHTML) + '元';
+                    };
+                };
+            };
+        </script>
+    </div>
+
+    <div class="modal fade" id="order-dialog" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="gridSystemModalLabel">订单信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="txt_consignee">收货人姓名</label>
+                        <input type="text" name="txt_consignee" class="form-control" id="txt_consignee"
+                               placeholder="收货人姓名">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_phone">联系电话</label>
+                        <input type="text" name="txt_phone" class="form-control" id="txt_phone" placeholder="联系电话">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_address">收货地址</label>
+                        <input type="text" name="txt_address" class="form-control" id="txt_address" placeholder="收货地址">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                    </button>
+                    <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 根据图书id去搜索值
+        $('.good_name').text('@item.bookname');
+        $('.good_price1').text(@item.price);
+        $('.good_price2').text(@item.price);
+        $('.good_price3').text(@item.price.ToString()+'元');
+    </script>
+    <script>
+        $('.buy').click(function () {
+            $('#order-dialog').modal();
+        })
+        $('.push_shoppingcar').click(function () {
+            $.ajax({
+                // 请求方式
+                type: "POST",
+                // 预期服务器返回的数据类型
+                dataType: "text", // json,html,text等等
+                // 发送信息至服务器时内容编码类型
+                // contentType: "application/json",
+                // 提交路径
+                url: "/Home/addshoppingcar",
+                async: false,
+                data: {
+                    //"user_id": Request.Cookies["userid"].Value,
+                    "good_id": @Request["good_id"],
+                    "good_price": $('.good_price1').text(),
+                    "good_count": $('.good_count').text()
+                },
+                // 如果提交成功，返回的值为state
+                success: function (state) {
+                    if(state == "1"){alert('添加成功');}
+                    else{alert('请先登录');}
+                    
+                },
+                error: function () {
+                    alert('请先登录');
+                }
+            })
+        })
+    </script>
+    <script>
+        $('#btn_submit').click(function () {
+            //alert($('.good_price1').text());
+            $.ajax({
+                // 请求方式
+                type: "POST",
+                // 预期服务器返回的数据类型
+                dataType: "text", // json,html,text等等
+                // 发送信息至服务器时内容编码类型
+                // contentType: "application/json",
+                // 提交路径
+                url: "/Home/settlement2",
+                async: false,
+                data: {
+                    //"user_id": Request.Cookies["userid"].Value,
+                    //"total_money": $('#selectGoodsMoney').text(),
+                    "consignee": $('#txt_consignee').val(),
+                    "phone": $('#txt_phone').val(),
+                    "address": $('#txt_address').val(),
+                    "good_id": @Request["good_id"],
+                    "good_price": $('.good_price1').text(),
+                    "good_count": $('.good_count').text()
+                },
+                // 如果提交成功，返回的值为state
+                success: function (state) {
+                    if(state == "1"){alert('下单成功');}
+                    else if(state == "0"){alert('请先登录');}
+                    else {alert('库存不足');}
+                },
+                error: function () {
+                    alert('库存不足或未登录');
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>

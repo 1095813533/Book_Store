@@ -1,0 +1,35 @@
+﻿
+  {
+    id: 10086, // 商品编号
+    imgUrl: '../Book/1.jpg', // 图片链接
+    goodsInfo: '机器学习', // 商品名称
+    price: 199, // 商品价格
+    goodsCount: 1, // 商品数量
+    singleGoodsMoney: 199 // 金额总和
+  },
+  {
+    id: 2,
+    imgUrl: '../Boook/2.jpg',
+    goodsInfo: '憨憨漫游电脑世界',
+    price: 299,
+    goodsCount: 2,
+    singleGoodsMoney: 598
+  },
+  {
+    id: 3,
+    imgUrl: '../Boook/3.jpg',
+    goodsInfo: 'Head
+    First Java',
+    price: 399,
+    goodsCount: 1,
+    singleGoodsMoney: 399
+  },
+  {
+    id: 4,
+    imgUrl: '../Boook/4.jpg',
+    goodsInfo: 'Java编程思想',
+    price: 399,
+    goodsCount: 1,
+    singleGoodsMoney: 399
+  }
+

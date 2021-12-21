@@ -1,0 +1,484 @@
+﻿
+@{
+    Layout = null;
+}
+@using Book_Store.Models
+@model IEnumerable<Book_Store.Models.book>
+<!DOCTYPE html>
+<html style="overflow-x: hidden !important;">
+
+<head>
+    <title>以书会友网</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="~/css/index.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/slide.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/left_side.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/right_side.css" />
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="~/scripts/jQuery.rTabs.js"></script>
+    <script src="~/scripts/slideBox.js"></script>
+</head>
+
+<body>
+    <header>
+        <!--logo-->
+        <div class="logo">
+            <img src="~/image/logo.png" width="200px" height="150px" style="">
+        </div>
+        <!--搜索框-->
+        <div class="search">
+            <form>
+                <input type="text" id="search-text" placeholder="你要的书，就在这里..." name="input">
+                <button type="button" id="search-btn" name="search_key"></button>
+            </form>
+        </div>
+        <script>
+            $('#search-btn').click(function () {
+                window.location.href = '/Home/search?search_text=' + $('#search-text').val();
+            })
+        </script>
+        <!--购物车-->
+        <div class="shopcar">
+            <!--购物车跳转-->
+            <a href="/Home/shoppingcar" style="text-decoration: none;color: white;" name="shoppingcar">
+                <span class="fa fa-shopping-cart" name="car"></span>
+                <span class="car-font">购物车</span></a>
+        </div>
+        <!--我的订单-->
+        <div class="order">
+            <a href="/Home/user_charts" style="text-decoration: none" name="orders">
+                <span class="font"> 我的订单</span>
+            </a>
+        </div>
+        </div>
+        <!--注册、登录-->
+        @if (Request.Cookies["userid"] == null)
+        {
+            <div class="sign">
+                <a href="/Home/login" style="text-decoration: none" name="sign_in">
+                    <span class="font"> 注册</span>
+                </a>
+                <a href="/Home/login" style="text-decoration: none" name="sign_up">
+                    <span class="font"> 登录</span>
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="sign">
+                <a href="/Home/user_faq" style="text-decoration: none" name="username">
+                    <span class="font">@Request.Cookies["username"].Value</span>
+                </a>
+            </div>
+        }
+        <!-- 天气 -->
+        <iframe class="tianqi" width="400" scrolling="no" height="60" frameborder="0" allowtransparency="true"
+            src="https://i.tianqi.com/index.php?c=code&id=12&icon=1&num=5&site=12"></iframe>
+
+        </div>
+        <!--分类栏-->
+        <div calss="nav_top" name="导航条">
+            <ul class="nav_top">
+                <li><a href="/Home/search_type?search_text=计算机" target="blank" style="text-decoration: none">教辅</a>
+                </li>
+                <li><a href="/Home/search_type?search_text=童书" target="blank" style="text-decoration: none">童书</a>
+                </li>
+                <li><a href="/Home/search_type?search_text=小说" target="blank" style="text-decoration: none">小说</a>
+                </li>
+                <li><a href="/Home/search_type?search_text=青春文学" target="blank" style="text-decoration: none">青春文学</a>
+                </li>
+                <li><a href="/Home/search_type?search_text=电子书" target="blank" style="text-decoration: none">电子书</a>
+                </li>
+                <li><a href="/Home/search_type?search_text=成功励志" target="blank" style="text-decoration: none">成功励志</a>
+                </li>
+                <li><a href="/Home/search_type?search_text=保健养生" target="blank" style="text-decoration: none">保健养生</a>
+                </li>
+                <li><a href="/Home/search_type?search_text=国外书籍" target="blank" style="text-decoration: none">国外书籍</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <main>
+        <div id="main_content">
+            <!--滚动窗口-->
+            <div id="main_slide" class="slideBox">
+                <ul class="items">
+                    <li> <a href=""><img src="~/image/01.jpg"></a> </li>
+                    <li> <a href=""><img src="~/image/02.jpg"></a> </li>
+                    <li> <a href=""><img src="~/image/03.jpg"></a> </li>
+                    <li> <a href=""><img src="~/image/04.jpg"></a> </li>
+                    <li> <a href=""><img src="~/image/05.jpg"></a> </li>
+                </ul>
+            </div>
+            <script>
+                jQuery(function ($) {
+                    $('#main_slide').slideBox({
+            duration: 0.3, //滚动时间，秒
+                        easing: 'linear', //滚动特效
+                        delay: 3, //延迟时间
+                        hideClickBar: false,
+                        clickBarRadius: 10
+                    })
+                })
+            </script>
+            <!--书籍区-->
+            <div class="table">
+                <table>
+                    <tr>
+                        @{
+                            List<book> bookmodel = Model as List<book>;
+                            int j = 1;
+                            foreach (var books in bookmodel)
+                            {
+                                if (j <= 4)
+                                {
+                                    <td>
+                                        <a href="/Home/bookpage?good_id=@books.bookid"><img src="@books.image_url" width="150px" height="150px" target="_blank"></a><span>@books.bookname</span>
+                                        <span>￥@books.price</span>
+                                    </td>
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                                j++;
+                            }
+
+                        }
+                    </tr>
+                    <tr>
+                        @{
+                            j = 1;
+                            foreach (var books in bookmodel)
+                            {
+                                if (j > 4 && j <= 8)
+                                {
+                                    <td>
+                                        <a href="/Home/bookpage?good_id=@books.bookid"><img src="@books.image_url" width="150px" height="150px" target="_blank"></a><span>@books.bookname</span>
+                                        <span>￥@books.price</span>
+                                    </td>
+                                }
+                                else if (j > 8)
+                                {
+                                    break;
+                                }
+                                j++;
+                            }
+
+                        }
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="news" style="width:250px;height: 150px;border:1px solid rgb(207, 204, 204);">
+            <h3>最新动态</h3>
+            <p style="position:relative;left:50px">
+                制作人员：<br>
+                软件工程第一小组<br>
+                刘威、詹欣炜<br>
+                黄敏、江羽灿、王思桐<br>
+            </p>
+        </div>
+
+        <!--左边热卖榜-->
+        <h2>新书热卖榜</h2>
+        <div class="tab" id="tab">
+            <div class="tab-nav j-tab-nav">
+                <a href="javascript:void(0);" class="current">总榜</a>
+                <a href="javascript:void(0);">计算机</a>
+                <a href="javascript:void(0);">小说</a>
+                <a href="javascript:void(0);">文学</a>
+                <a href="javascript:void(0);">国外</a>
+            </div>
+
+            <div class="tab-con">
+                <!--内容-->
+                <div class="j-tab-con">
+                        @{
+                            book_store_db bookdb = new book_store_db();
+                            var booknew = bookdb.book.Select(m => m).ToList<book>();
+                            booknew = booknew.OrderByDescending(m => m.bookid).ToList();
+                            int news = 1;
+                            <div class="tab-con-item" style="display:block;">
+                                <ol>
+                                    @foreach (var book1 in booknew)
+                                    {
+                                        if (news <= 11)
+                                        {
+                                            <li><a href="/Home/bookpage?good_id=@book1.bookid" target="blank" style="text-decoration: none">@book1.bookname</a></li>
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                        news++;
+                                    }
+                                </ol>
+                            </div>
+                        }
+                        <div class="tab-con-item">
+                                <ol>
+                                    @{
+                                        List<book> booknew_tong = bookdb.book.Where(s => s.type.Contains("计算机")).Select(m => m).ToList();
+                                        booknew_tong = booknew_tong.OrderByDescending(m => m.bookid).ToList();
+                                        news = 1;
+                                        foreach (var books in booknew_tong)
+                                        {
+                                            if (news <= 11)
+                                            {
+                                                <li><a href="/Home/bookpage?good_id=@books.bookid" target="blank" style="text-decoration: none">@books.bookname</a></li>
+                                                news++;
+                                            }
+                                            else
+                                            {
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                </ol>
+                        </div>
+
+                            <div class="tab-con-item">
+                                <ol>
+                                    @{
+                                        List<book> booknew_xiao = bookdb.book.Where(s => s.type.Contains("小说")).Select(m => m).ToList();
+                                        booknew_xiao = booknew_xiao.OrderByDescending(m => m.bookid).ToList();
+                                        news = 1;
+                                        foreach (var books in booknew_xiao)
+                                        {
+                                            if (news <= 11)
+                                            {
+                                                <li><a href="/Home/bookpage?good_id=@books.bookid" target="blank" style="text-decoration: none">@books.bookname</a></li>
+                                                news++;
+                                            }
+                                            else
+                                            {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                </ol>
+                            </div>
+                            <div class="tab-con-item">
+                                <ol>
+                                    @{
+                                        List<book> booknew_wen = bookdb.book.Where(s => s.type.Contains("文学")).Select(m => m).ToList();
+                                        booknew_wen = booknew_wen.OrderByDescending(m => m.bookid).ToList();
+                                        news = 1;
+                                        foreach (var books in booknew_wen)
+                                        {
+                                            if (news <= 11)
+                                            {
+                                                <li><a href="/Home/bookpage?good_id=@books.bookid" target="blank" style="text-decoration: none">@books.bookname</a></li>
+                                                news++;
+                                            }
+                                            else
+                                            {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                </ol>
+                            </div>
+                            <div class="tab-con-item">
+                                <ol>
+                                    @{
+                                        List<book> booknew_guo = bookdb.book.Where(s => s.type.Contains("国外")).Select(m => m).ToList();
+                                        booknew_guo = booknew_guo.OrderByDescending(m => m.bookid).ToList();
+                                        news = 1;
+                                        foreach (var books in booknew_guo)
+                                        {
+                                            if (news <= 11)
+                                            {
+                                                <li><a href="/Home/bookpage?good_id=@books.bookid" target="blank" style="text-decoration: none">@books.bookname</a></li>
+                                                news++;
+                                            }
+                                            else
+                                            {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                </ol>
+                            </div>          
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            $(function () {
+                $("#tab").rTabs({
+            bind: 'click',
+                    animation: 'left'
+                });
+                $("#tab2").rTabs({
+            bind: 'click',
+                    animation: 'left'
+                });
+
+                $("#tab3").rTabs({
+            bind: 'hover',
+                    animation: 'up'
+                });
+
+                $("#tab4").rTabs({
+            bind: 'hover',
+                    animation: 'fadein'
+                });
+        })
+        </script>
+        <!--新书预售-->
+        <div class="newbook" style="width:250px;height: 180px;border:1px solid rgb(207, 204, 204);">
+            <h4>热卖书</h4>
+            @{ 
+                int hot = 0;
+                foreach (var books in bookmodel)
+                {
+                    if (hot <= 0)
+                    {
+                        <a href=""><img src="~/image/001.jpg" width="150px" height="150px" target="_blank"></a><span>@books.bookname</span>
+                        <span>￥@books.price</span>
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    hot++;
+                }
+            }
+        </div>
+        <!--右边排行榜-->
+        <!--新书热卖榜-->
+
+        <h1>图书畅销榜</h1>
+        <div class="right_side">
+            <div class="tab" id="tab2">
+                <div class="tab-nav j-tab-nav">
+                    <a href="javascript:void(0);" class="current">总榜</a>
+                    <a href="javascript:void(0);">计算机</a>
+                    <a href="javascript:void(0);">小说</a>
+                    <a href="javascript:void(0);">文学</a>
+                    <a href="javascript:void(0);">国外</a>
+                </div>
+                <div class="tab-con">
+                    <div class="j-tab-con">
+                        <div class="tab-con-item" style="display:block;">
+                            <ol>
+                                @{
+                                    int k = 1;
+                                    foreach (var books in bookmodel)
+                                    {
+                                        if (k <= 11)
+                                        {
+                                            <li><a href="/Home/bookpage?good_id=@books.bookid" target="blank" style="text-decoration: none">@books.bookname</a></li>
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                        k++;
+                                    }
+
+                                }
+                            </ol>
+                        </div>
+                        <div class="tab-con-item">
+                            <ol>
+                                @{
+                                    List<book> book_tong = bookdb.book.Where(s => s.type.Contains("计算机")).Select(m => m).ToList();
+                                    book_tong = book_tong.OrderByDescending(m => m.salenum).ToList();
+                                    k = 1;
+                                    foreach (var books in book_tong)
+                                    {
+                                        if (k <= 11)
+                                        {
+                                            <li><a href="/Home/bookpage?good_id=@books.bookid" target="blank" style="text-decoration: none">@books.bookname</a></li>
+                                            k++;
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                            </ol>
+                        </div>
+                        <div class="tab-con-item">
+                            <ol>
+                                @{
+                                    List<book> book_xiao = bookdb.book.Where(s => s.type.Contains("小说")).Select(m => m).ToList();
+                                    book_xiao = book_xiao.OrderByDescending(m => m.salenum).ToList();
+                                    k = 1;
+                                    foreach (var books in book_xiao)
+                                    {
+                                        if (k <= 11)
+                                        {
+                                            <li><a href="/Home/bookpage?good_id=@books.bookid" target="blank" style="text-decoration: none">@books.bookname</a></li>
+                                            k++;
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                            </ol>
+                        </div>
+                        <div class="tab-con-item">
+                            <ol>
+                                @{
+                                    List<book> book_wen = bookdb.book.Where(s => s.type.Contains("文学")).Select(m => m).ToList();
+                                    book_wen = book_wen.OrderByDescending(m => m.salenum).ToList();
+                                    k = 1;
+                                    foreach (var books in book_wen)
+                                    {
+                                        if (k <= 11)
+                                        {
+                                            <li><a href="/Home/bookpage?good_id=@books.bookid" target="blank" style="text-decoration: none">@books.bookname</a></li>
+                                            k++;
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                            </ol>
+                        </div>
+                        <div class="tab-con-item">
+                            <ol>
+                                @{
+                                    List<book> book_guo = bookdb.book.Where(s => s.type.Contains("国外")).Select(m => m).ToList();
+                                    book_guo = book_guo.OrderByDescending(m => m.salenum).ToList();
+                                    k = 1;
+                                    foreach (var books in book_guo)
+                                    {
+                                        if (k <= 11)
+                                        {
+                                            <li><a href="/Home/bookpage?good_id=@books.bookid" target="blank" style="text-decoration: none">@books.bookname</a></li>
+                                            k++;
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <footer>
+        <p>以书会友网</p>
+        <p>Powerby@17计算机软工第一组</p>
+    </footer>
+</body>
+
+</html>

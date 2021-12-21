@@ -1,0 +1,656 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta charset="utf-8" />
+    <title>购物车</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!--toastr样式-->
+    <link href="https://cdn.bootcdn.net/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <!--购物车css属性-->
+    <style lang="scss">
+        .shopping-car-container {
+            padding: 50px 40px;
+        }
+
+            .shopping-car-container .car-headers-menu {
+                border-bottom: 1px solid #f5f5f5;
+                padding: 0 15px;
+            }
+
+            .shopping-car-container .panel-body {
+                padding: 15px 0;
+            }
+
+        #checkAll {
+            vertical-align: text-bottom;
+        }
+
+        .shopping-car-container .car-menu {
+            text-align: center;
+        }
+
+        /*
+             商品区
+             * */
+
+        .shopping-car-container .goods-content {
+            margin-top: 15px;
+        }
+
+            .shopping-car-container .goods-content .goods-item {
+                margin-top: 20px;
+            }
+
+                .shopping-car-container .goods-content .goods-item .car-goods-info {
+                    height: 150px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    overflow: hidden;
+                }
+
+                .shopping-car-container .goods-content .goods-item .goods-image-column img,
+                .shopping-car-container .goods-content .goods-item .goods-image-column span {
+                    display: block;
+                    float: left;
+                }
+
+                .shopping-car-container .goods-content .goods-item .goods-image-column span {
+                    width: calc(100% - 100px);
+                    box-sizing: border-box;
+                    text-indent: 2rem;
+                    line-height: 25px;
+                    padding: 10px;
+                }
+
+        .goods-price {
+            color: red;
+            font-weight: bolder;
+        }
+
+        .form-control {
+            text-align: center;
+        }
+
+        .single-total {
+            color: red;
+            font-weight: bold;
+        }
+
+        .goods-params {
+            color: darkgray;
+        }
+
+        .bottom-menu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .bottom-menu #checkAllBottom {
+                vertical-align: text-bottom;
+            }
+
+        #deleteMulty {
+            color: cornflowerblue;
+            cursor: pointer;
+            vertical-align: text-bottom;
+        }
+
+        .bottom-menu-include {
+            background: #e5e5e5;
+        }
+
+        #selectGoodsCount {
+            color: orangered;
+            font-size: 16px;
+            font-weight: bolder;
+        }
+
+        #selectGoodsMoney {
+            color: orangered;
+            font-size: 16px;
+            font-weight: bolder;
+        }
+
+        .panel-default .submitData {
+            background: orangered;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+            font-weight: bolder;
+            height: 58px;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        .panel-default .submitDis {
+            background: #B0B0B0;
+            cursor: no-drop;
+        }
+
+        .shopping-car-container .panel-default {
+            position: relative;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!---->
+    <div class="shopping-car-container">
+        <div class="car-headers-menu">
+            <div class="row">
+                <div class="col-md-1 car-menu">
+                    <label><input type="checkbox" id="check-goods-all" /><span id="checkAll">全选</span></label>
+                </div>
+                <div class="col-md-1 car-menu">商品编号</div>
+                <div class="col-md-3 car-menu">商品信息</div>
+                <div class="col-md-1 car-menu">单价</div>
+                <div class="col-md-2 car-menu">数量</div>
+                <div class="col-md-1 car-menu">金额</div>
+                <div class="col-md-2 car-menu">操作</div>
+            </div>
+        </div>
+
+        <div class="goods-content">
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body bottom-menu-include">
+                <div class="col-md-1 check-all-bottom bottom-menu">
+                    <label>
+                        <input type="checkbox" id="checked-all-bottom" />
+                        <span id="checkAllBottom">全选</span>
+                    </label>
+                </div>
+                <div class="col-md-1 bottom-menu">
+                    <span id="deleteMulty">
+                        删除
+                    </span>
+                </div>
+                <div class="col-md-6 bottom-menu">
+                </div>
+                <div class="col-md-2 bottom-menu">
+                    <span>已选商品 <span id="selectGoodsCount">0</span> 件</span>
+                </div>
+                <div class="col-md-1 bottom-menu">
+                    <span>合计：<span id="selectGoodsMoney">0.00</span></span>
+                </div>
+                <div id="settlement" class="col-md-1 bottom-menu submitData submitDis">
+                    结算
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" tabindex="-1" role="dialog" id="deleteItemTip" aria-labelledby="gridSystemModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="gridSystemModalLabel">提示</h4>
+                    </div>
+                    <div class="modal-body">
+                        确认删除此商品？
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary deleteSure">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" tabindex="-1" role="dialog" id="selectItemTip" aria-labelledby="gridSystemModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="gridSystemModalLabel">提示</h4>
+                    </div>
+                    <div class="modal-body">
+                        请选择要删除的商品！
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" tabindex="-1" role="dialog" id="deleteMultyTip" aria-labelledby="gridSystemModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="gridSystemModalLabel">提示</h4>
+                    </div>
+                    <div class="modal-body">
+                        确认删除选择的商品！
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary deleteMultySure">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="order-dialog" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="gridSystemModalLabel">订单信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="txt_consignee">收货人姓名</label>
+                        <input type="text" name="txt_consignee" class="form-control" id="txt_consignee"
+                               placeholder="收货人姓名">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_phone">联系电话</label>
+                        <input type="text" name="txt_phone" class="form-control" id="txt_phone" placeholder="联系电话">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_address">收货地址</label>
+                        <input type="text" name="txt_address" class="form-control" id="txt_address"
+                               placeholder="收货地址">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                    </button>
+                    <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+            $('#settlement').click(function () {
+                $('#order-dialog').modal('show');
+            })
+    </script>
+    <script>
+            $('#btn_submit').click(function () {
+                var goods_list = new Array();
+                for (var i = 0; i < $('.goods-item').length; i++) {
+                    var elInput = $('.goods-item').eq(i).find('.goods-list-item')
+                    var isChecked = $('.goods-item').eq(i).find('.goods-list-item')[0].checked
+                    // 如果当前的商品被选中
+                    if (isChecked) {
+                        //alert($('.goods-item').eq(i).find('.single-id').text());  // 商品编号
+                        //alert($('.goods-item').eq(i).find('.goods-image')[0].src);  // 商品图片地址
+                        //alert($('.goods-item').eq(i).find('#goods-info').text());  // 商品名称
+                        //alert($('.goods-item').eq(i).find('.single-price').text());  // 商品价格
+                        //alert($('.goods-item').eq(i).find('.goods-count').val());  // 商品数量
+                        //alert($('.goods-item').eq(i).find('.single-total').text());  // 商品数量
+                        var good = {
+                            id: $('.goods-item').eq(i).find('.single-id').text(),
+                            imgUrl: $('.goods-item').eq(i).find('.goods-image')[0].src,
+                            goodsInfo: $('.goods-item').eq(i).find('#goods-info').text(),
+                            price: $('.goods-item').eq(i).find('.single-price').text(),
+                            goodsCount: $('.goods-item').eq(i).find('.goods-count').val(),
+                            singleGoodsMoney: $('.goods-item').eq(i).find('.single-total').text()
+                        }
+                        goods_list.push(good);
+                    }
+                }
+                // alert(goods_list[0]["goodsInfo"]);
+                // alert($('#txt_address').val());
+                $.ajax({
+                    // 请求方式
+                    type: "POST",
+                    // 预期服务器返回的数据类型
+                    dataType: "text", // json,html,text等等
+                    // 发送信息至服务器时内容编码类型
+                    // contentType: "application/json",
+                    // 提交路径
+                    url: "/Home/settlement",
+                    async: false,
+                    data: {
+                        "userid": @Request.Cookies["userid"].Value,
+                        "total_money": $('#selectGoodsMoney').text(),
+                        "consignee": $('#txt_consignee').val(),
+                        "phone": $('#txt_phone').val(),
+                        "address": $('#txt_address').val(),
+                        "goods_list": JSON.stringify(goods_list)
+                    },
+                    // 如果提交成功，返回的值为state
+                    success: function (state) {
+                        if (state === "1") toastr.success("下单成功");
+                        else {
+                            toastr.error("库存不足");
+                            return;
+                        }
+                        for (var i = 0; i < $('.goods-list-item:checked').length; i++) {
+                            var multyDelete = new ShoppingCarObserver($('.goods-list-item:checked').eq(i), null)
+                            multyDelete.deleteGoods()
+                            i--
+                        }
+                        var checkCount = new ShoppingCarObserver()
+                        checkCount.checkOptions()
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                })
+                    
+            })
+    </script>
+    <script type="text/javascript">
+        // 加载数据的时候只要根据用户id从服务器请求数据即可
+        var goodsList
+        $.ajax({
+            // 请求方式
+            type: "GET",
+            // 预期服务器返回的数据类型
+            dataType: "json", // json,html,text等等
+            // 发送信息至服务器时内容编码类型
+            contentType: "application/json",
+            // 提交路径
+            url: "/Home/loadshoppingCar",
+            async: false,
+            data: {
+                //"user_id": Request.cookie["user_id"],
+            },
+            // 如果提交成功，返回的值为data
+            success: function (data) {
+                //alert('success');
+                goodsList = data;  // 从服务器接收的数据，json格式
+            },
+            error: function () {
+                alert('error');
+            }
+        })
+        var deleteGoods = null
+        loadGoods()
+
+        function loadGoods() {
+            $.each(goodsList, function (i, item) {
+                var goodsHtml = '<div class="goods-item">' +
+                    '<div class="panel panel-default">' +
+                    '<div class="panel-body">' +
+                    '<div class="col-md-1 car-goods-info">' +
+                    '<label><input type="checkbox" class="goods-list-item"/></label>' +
+                    '</div>' +
+
+                    '<div class="col-md-1 car-goods-info goods-id"><span class="single-id">' +
+                    item.id + '</span></div>' +
+
+                    '<div class="col-md-3 car-goods-info goods-image-column">' +
+                    '<img class="goods-image" src="' + item.imgUrl +
+                    '" style="width: 100px; height: 100px;" />' +
+                    '<span id="goods-info">' +
+                    item.goodsInfo +
+                    '</span>' +
+                    '</div>' +
+
+                    '<div class="col-md-1 car-goods-info goods-price"><span>￥</span><span class="single-price">' +
+                    item.price + '</span></div>' +
+
+                    '<div class="col-md-2 car-goods-info goods-counts">' +
+                    '<div class="input-group">' +
+                    '<div class="input-group-btn">' +
+                    '<button type="button" class="btn btn-default car-decrease">-</button>' +
+                    '</div>' +
+
+                    '<input type="text" disabled="disabled" class="form-control goods-count" value="' + item
+                    .goodsCount + '">' +
+                    '<div class="input-group-btn">' +
+                    '<button type="button" class="btn btn-default car-add">+</button>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+
+                    '<div class="col-md-1 car-goods-info goods-money-count"><span>￥</span><span class="single-total">' +
+                    item.singleGoodsMoney + '</span></div>' +
+                    '<div class="col-md-2 car-goods-info goods-operate">' +
+                    '<button type="button" class="btn btn-danger item-delete">删除</button>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>'
+                $('.goods-content').append(goodsHtml)
+            })
+        }
+
+        function ShoppingCarObserver(elInput, isAdd) {
+            if (elInput) {
+                this.elInput = elInput
+                this.parents = this.elInput.parents('.goods-item')
+                this.count = parseInt(this.elInput.val())
+                this.singlePrice = parseFloat(this.parents.find('.single-price').text())
+            }
+            if (isAdd) {
+                this.isAdd = isAdd
+            }
+            this.computeGoodsMoney = function () { //计算商品价格
+                var moneyCount = this.count * this.singlePrice
+                var singleTotalEl = this.parents.find('.single-total')
+                console.log(moneyCount)
+                singleTotalEl.empty().append(moneyCount)
+            }
+            this.showCount = function () { // 计算商品选中数量
+                var isChecked = this.parents.find('.goods-list-item')[0].checked
+                var GoodsTotalMoney = parseFloat($('#selectGoodsMoney').text())
+                var goodsTotalCount = parseInt($('#selectGoodsCount').text())
+                if (this.elInput) {
+                    if (this.isAdd) {
+                        ++this.count
+                        if (isChecked) {
+                            $('#selectGoodsMoney').empty().append(GoodsTotalMoney + this.singlePrice)
+                            $('#selectGoodsCount').empty().append(goodsTotalCount + 1)
+                        }
+                    } else {
+                        if (parseInt(this.count) <= 1) {
+                            return
+                        } else {
+                            --this.count
+                            if (isChecked) {
+                                $('#selectGoodsMoney').empty().append(GoodsTotalMoney - this.singlePrice)
+                                $('#selectGoodsCount').empty().append(goodsTotalCount - 1)
+                            }
+                        }
+                    }
+                    this.elInput.val(this.count)
+                }
+            }
+            this.checkIsAll = function () { //全选
+                var checkLen = $('.goods-list-item:checked').length
+                if (checkLen > 0) {
+                    $('.submitData').removeClass('submitDis')
+                } else {
+                    $('.submitData').addClass('submitDis')
+                }
+                if ($('.goods-item').length === checkLen && checkLen > 0) {
+                    $('#checked-all-bottom, #check-goods-all').prop('checked', true)
+                } else {
+                    $('#checked-all-bottom, #check-goods-all').prop('checked', false)
+                }
+            }
+            this.checkedChange = function (isChecked) { //选中状态改变， isChecked为选中状态
+                if (isChecked === undefined) {
+                    var isChecked = this.parents.find('.goods-list-item')[0].checked
+                }
+                var itemTotalMoney = parseFloat(this.parents.find('.single-total').text())
+                var GoodsTotalMoney = parseFloat($('#selectGoodsMoney').text())
+                var itemCount = parseInt(this.parents.find('.goods-count').val())
+                var goodsTotalCount = parseInt($('#selectGoodsCount').text())
+                if (isChecked) {
+                    $('#selectGoodsMoney').empty().append(itemTotalMoney + GoodsTotalMoney)
+                    $('#selectGoodsCount').empty().append(itemCount + goodsTotalCount)
+                } else {
+                    if (GoodsTotalMoney - itemTotalMoney === 0) {
+                        $('#selectGoodsMoney').empty().append('0.00')
+                        if (!$('.submitData').hasClass('submitDis')) {
+                            $('.submitData').addClass('submitDis')
+                        }
+                    } else {
+                        $('#selectGoodsMoney').empty().append(GoodsTotalMoney - itemTotalMoney)
+                    }
+                    $('#selectGoodsCount').empty().append(goodsTotalCount - itemCount)
+                }
+            }
+            this.deleteGoods = function () { //删除商品
+                var isChecked = this.parents.find('.goods-list-item')[0].checked
+                if (isChecked) {
+                    this.checkedChange(false)
+                }
+                // 如果点击确定则执行下面函数，进行删除操作
+
+                // this.parents.find('.single-id').text();这句是删除的商品的编号
+                // 如果选中多个商品并删除的话每个删除的删除的商品都会调用一次该方法
+                // alert(this.parents.find('.single-id').text());
+                $.ajax({
+                    // 请求方式
+                    type: "POST",
+                    // 预期服务器返回的数据类型
+                    dataType: "text", // json,html,text等等
+                    // 发送信息至服务器时内容编码类型
+                    //contentType: "application/json",
+                    // 提交路径
+                    url: "/Home/shoppingcardelete",
+                    async: false,
+                    data: {
+                        "userid": @Request.Cookies["userid"].Value,
+                        'goods_id': this.parents.find('.single-id').text()
+                    },
+                    // 如果提交成功，返回的值为state
+                    success: function (state) {
+                        //alert('success');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                })
+
+                this.parents.remove()
+                this.checkOptions()
+            }
+            this.checkOptions = function () {
+                if ($('#check-goods-all')[0].checked) {
+                    if ($('.goods-list-item').length <= 0) {
+                        $('#checked-all-bottom, #check-goods-all').prop('checked', false)
+                    }
+                } else {
+                    this.checkIsAll()
+                }
+            }
+        }
+
+        function checkedAll(_this) {
+            if ($('.goods-item').length <= 0) {
+                $('.submitData').addClass('submitDis')
+            } else {
+                $('.submitData').removeClass('submitDis')
+            }
+            for (var i = 0; i < $('.goods-item').length; i++) {
+                var elInput = $('.goods-item').eq(i).find('.goods-list-item')
+                var isChecked = $('.goods-item').eq(i).find('.goods-list-item')[0].checked
+                var checkAllEvent = new ShoppingCarObserver(elInput, null)
+                if (_this.checked) {
+                    if (!isChecked) {
+                        elInput.prop('checked', true)
+                        checkAllEvent.checkedChange(true)
+                    }
+                } else {
+                    if (!$('.submitData').hasClass('submitDis')) {
+                        $('.submitData').addClass('submitDis')
+                    }
+                    if (isChecked) {
+                        elInput.prop('checked', false)
+                        checkAllEvent.checkedChange(false)
+                    }
+                }
+            }
+        }
+        $('#check-goods-all').on('change', function () {
+            if (this.checked) {
+                $('#checked-all-bottom').prop('checked', true)
+            } else {
+                $('#checked-all-bottom').prop('checked', false)
+            }
+            checkedAll(this)
+        })
+        $('#checked-all-bottom').on('change', function () {
+            if (this.checked) {
+                $('#check-goods-all').prop('checked', true)
+            } else {
+                $('#check-goods-all').prop('checked', false)
+            }
+            checkedAll(this)
+        })
+        $('.goods-list-item').on('change', function () {
+            var tmpCheckEl = $(this)
+            var checkEvent = new ShoppingCarObserver(tmpCheckEl, null)
+            checkEvent.checkedChange()
+            checkEvent.checkIsAll()
+        })
+        $('.goods-content').on('click', '.car-decrease', function () {
+            var goodsInput = $(this).parents('.input-group').find('.goods-count')
+            var decreaseCount = new ShoppingCarObserver(goodsInput, false)
+            decreaseCount.showCount()
+            decreaseCount.computeGoodsMoney()
+        })
+        $('.goods-content').on('click', '.car-add', function () {
+            var goodsInput = $(this).parents('.input-group').find('.goods-count')
+            var addCount = new ShoppingCarObserver(goodsInput, true)
+            addCount.showCount()
+            addCount.computeGoodsMoney()
+        })
+        $('.goods-content').on('click', '.item-delete', function () {
+            var goodsInput = $(this).parents('.goods-item').find('.goods-list-item')
+            deleteGoods = new ShoppingCarObserver(goodsInput, null)
+            $('#deleteItemTip').modal('show')
+        })
+        $('.deleteSure').on('click', function () {
+            if (deleteGoods !== null) {
+                deleteGoods.deleteGoods()
+            }
+            $('#deleteItemTip').modal('hide')
+        })
+        $('#deleteMulty').on('click', function () {
+            if ($('.goods-list-item:checked').length <= 0) {
+                $('#selectItemTip').modal('show')
+            } else {
+                $('#deleteMultyTip').modal('show')
+            }
+        })
+        $('.deleteMultySure').on('click', function () {
+            for (var i = 0; i < $('.goods-list-item:checked').length; i++) {
+                var multyDelete = new ShoppingCarObserver($('.goods-list-item:checked').eq(i), null)
+                multyDelete.deleteGoods()
+                i--
+            }
+            var checkCount = new ShoppingCarObserver()
+            checkCount.checkOptions()
+            $('#deleteMultyTip').modal('hide')
+        })
+    </script>
+</body>
+
+</html>

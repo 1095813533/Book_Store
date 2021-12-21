@@ -1,0 +1,62 @@
+﻿
+@{
+    Layout = null;
+}
+
+@using Book_Store.Models
+@model IEnumerable<Book_Store.Models.book>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <form class="form-inline" style="text-align: center;">
+        <img src="~/image/logo.png" style="width: 400px; height: 250px; display: block; margin: auto;">
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+                <input type="text" class="form-control" value="@Request["search_text"]" id="search-text" placeholder="搜索内容输入···" style="width: 250px;">
+            </div>
+        </div>
+        <button type="button" id="search-btn" class="btn btn-primary">搜索</button>
+    </form>
+    <script>
+        $('#search-btn').click(function () {
+            window.location.href = "?search_text=" + $('#search-text').val();
+        })
+    </script>
+
+    <style>
+        #search-table tr td img {
+            display: block;
+            margin: 0 auto;
+        }
+
+        #search-table tr td span {
+            display: block;
+            text-align: center;
+        }
+    </style>
+    <!--用request直接请求-->
+    <!--这部分内容根据?search_text=的值动态加载-->
+    <table class="table" id="search-table" style="margin-top: 20px;">
+    <tr>
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            if (i != 0 && i % 4 == 0)
+            {
+                @Html.Raw("</tr><tr>");
+            }
+            var item = Model.ElementAt(i);
+            <td> <a href="/Home/bookpage?good_id=@item.bookid"><img src=@item.image_url></a> <span>@item.bookname</span> <span>￥@item.price</span> </td>
+         }
+    </tr>
+    </table>
+</body>
+
+</html>

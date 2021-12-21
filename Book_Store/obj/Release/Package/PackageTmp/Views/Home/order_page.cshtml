@@ -1,0 +1,118 @@
+﻿
+@{
+    Layout = null;
+}
+@using Book_Store.Models
+@model IEnumerable<Book_Store.Models.orderbook>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--引入jquery-->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <!--引入bootstrap-->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <!--引入bootstrap-table-->
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-table/1.16.0/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-table/1.16.0/bootstrap-table.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-table/1.16.0/locale/bootstrap-table-zh-CN.min.js"></script>
+</head>
+
+<body>
+    <!--request[order-id]-->
+    <!--?order-id=2-->
+    <div class="panel panel-default" style="margin-top: 50px; margin-left:50px; width: 30%;">
+        @{  book_store_db bookdb = new book_store_db();
+            string orderid = Request["orderid"];
+            List<order> ordermodel = bookdb.order.Where(u => u.orderid == orderid).Select(m => m).ToList();
+            foreach (var orders in ordermodel)
+            {
+                <div><span>订单编号：</span><span>@orders.orderid</span></div>
+                <div><span>用户编号：</span><span>@orders.userid</span></div>
+                <div><span>金额：</span><span>@orders.totalprice</span></div>
+                <div><span>收货人：</span><span>@orders.name</span></div>
+                <div><span>收获地址：</span><span>@orders.address</span></div>
+                <div><span>联系电话：</span><span>@orders.phone</span></div>
+                <div><span>时间：</span><span>@orders.time</span></div>
+                if (@orders.status == true)
+                {
+                    <div><span>状态：</span><span>已处理</span></div>
+                }
+                else
+                {
+                    <div><span>状态：</span><span>未处理</span></div>
+                }
+            }
+
+        }
+    </div>
+    <table id="tb_order" style="margin-top: 50px;">
+        <tbody>
+            @{
+
+                for (int i = 0; i < Model.Count(); i++)
+                {
+                    var item = Model.ElementAt(i);
+                    <tr>
+                        <td>@item.bookid</td>
+                        <td>@item.imgUrl</td>
+                        <td>@item.bookname</td>
+                        <td>@item.price</td>
+                        <td>@item.counts</td>
+                        <td>@item.totalprice</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+</body>
+<script>
+    /*
+    var data;
+    data = [{
+        'good-id': 1,
+        'good-img': 'image/1.jpg',
+        'good-info': '机器学习',
+        'good-price': 100,
+        'good-count': 10,
+        'good-total-money': 1000
+    },{
+        'good-id': 2,
+        'good-img': 'image/2.jpg',
+        'good-info': '憨憨漫游电脑世界',
+        'good-price': 200,
+        'good-count': 10,
+        'good-total-money': 2000
+    }]
+    */
+    // 一开始根据?order-id=xx,加载对应订单的数据
+    $('#tb_order').bootstrapTable({
+        //showFooter: true,
+        columns: [{
+            field: 'good-id',
+            title: '商品编号'
+        }, {
+            field: 'good-img',
+            title: '商品图片',
+            formatter: function (value, row, index) {
+                return '<img  src=' + value + ' widtd="100" height="100">';
+            }
+        }, {
+            field: 'good-info',
+            title: '商品信息'
+        }, {
+            field: 'good-price',
+            title: '商品单价'
+        }, {
+            field: 'good-count',
+            title: '商品数量',
+        }, {
+            field: 'good-total-money',
+            title: '总金额'
+        }],
+    });
+</script>
+
+</html>

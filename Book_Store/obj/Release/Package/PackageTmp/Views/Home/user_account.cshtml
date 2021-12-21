@@ -1,0 +1,208 @@
+﻿
+@{
+    Layout = null;
+}
+@using Book_Store.Models
+@model IEnumerable<Book_Store.Models.user>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>User Account - Bootstrap Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.min.css"
+          rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/css/adminia.css" rel="stylesheet" />
+    <link href="~/css/adminia-responsive.css" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <!--toastr样式-->
+    <link href="https://cdn.bootcdn.net/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+</head>
+
+<body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href=""><img src="~/image/header-img.png" width="60px" height="40px"></a>
+            </div>
+        </div>
+    </div>
+    <div id="content">
+        <div class="container">
+            <div class="row">
+                <div class="span3">
+                    <div class="account-container">
+                        <div class="account-avatar">
+                            <img src="~/image/headshot.png" alt="" class="thumbnail" />
+                        </div>
+                        <div class="account-details">
+                            <span class="account-actions">
+                                编号:@Request.Cookies["userid"].Value
+                            </span>
+                        </div>
+                    </div>
+                    <hr />
+                    <ul id="main-nav" class="nav nav-tabs nav-stacked">
+                        <li>
+                            <!--客户咨询--> <a href="user_faq">
+                                <i class="fa fa-comment"></i>
+                                反馈
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="user_account">
+                                <i class="fa fa-user"></i>
+                                用户中心
+                            </a>
+                        </li>
+                        <li>
+                            <!--订单管理--> <a href="user_charts">
+                                <i class="fa fa-minus-square"></i>
+                                订单管理
+                            </a>
+                        </li>
+
+                        <li>
+                            <!--退出界面--> <a id="logout-btn" style="cursor:pointer">
+                                <i class="fa fa-arrow-right"></i>
+                                注销登录
+                            </a>
+                        </li>
+                        <script>
+                            $('#logout-btn').click(function () {
+                                if (window.confirm("是否注销") === false) return;
+                                toastr.success("注销成功");
+                                window.location.href = "/Home/logout";
+                            })
+                        </script>
+                    </ul>
+                </div>
+                <div class="span9">
+                    <h1 class="page-title">
+                        <i class="fa fa-user"></i>
+                        用户中心
+                    </h1>
+                    @{
+                        var item = Model.ElementAt(0);
+                     }
+                    <div class="row">
+                        <div class="span9">
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <h3>基础信息</h3>
+                                </div>
+                                <div class="widget-content">
+                                    <div class="tabbable">
+                                        <br />
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="1">
+                                                <form id="edit-profile" class="form-horizontal">
+                                                    <fieldset>
+                                                        <div class="control-group">
+                                                            <label class="control-label" for="username">用户名</label>
+                                                            <div class="controls">
+                                                                <input type="text" class="input-medium disabled"
+                                                                       id="username" value= @item.username disabled="" />
+                                                                <p class="help-block">您的用户名用于登录，不能更改。</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class=" control-group">
+                                                            <label class="control-label" for="email">邮箱</label>
+                                                            <div class="controls">
+                                                                <input type="text" class="input-large" id="email"
+                                                                       value= @item.email />
+                                                            </div>
+                                                        </div>
+                                                        <div class="control-group">
+                                                            <label class="control-label" for="phone">电话</label>
+                                                            <div class="controls">
+                                                                <input type="text" class="input-large" id="phone"
+                                                                       value= @item.phone />
+                                                            </div>
+                                                        </div>
+                                                        <div class="control-group">
+                                                            <label class="control-label" for="address">地址</label>
+                                                            <div class="controls">
+                                                                <input type="text" class="input-large" id="address"
+                                                                       value=@item.useraddress />
+                                                            </div>
+                                                        </div>
+                                                        <br /><br />
+                                                        <div class="control-group">
+                                                            <label class="control-label" for="password1">用户密码</label>
+                                                            <div class="controls">
+                                                                <input type="password" class="input-medium"
+                                                                       id="password1" value="password" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="control-group">
+                                                            <label class="control-label" for="password2">确认密码</label>
+                                                            <div class="controls">
+                                                                <input type="password" class="input-medium"
+                                                                       id="password2" value="password" />
+                                                            </div>
+                                                        </div>
+                                                        <br />
+                                                        <div class="form-actions">
+                                                            <div type="botton" class="btn btn-primary" id="save-btn">
+                                                                保存
+                                                            </div>
+                                                            <button class="btn">取消</button>
+                                                        </div>
+                                                    </fieldset>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        $('#save-btn').click(function () {
+            if ($('#password1').val() != $('#password2').val()) {
+                toastr.error('密码不一致');
+                return;
+            }
+            $.ajax({
+                // 请求方式
+                type: "POST",
+                // 预期服务器返回的数据类型
+                dataType: "text", // json,html,text等等
+                // 发送信息至服务器时内容编码类型
+                // contentType: "application/json",
+                // 提交路径
+                url: "/Home/changeinfo",
+                async: false,
+                data: {
+                    "email": $('#email').val(),
+                    "phone": $('#phone').val(),
+                    "password": $('#password1').val(),
+                    "address": $('#address').val()
+                },
+                // 如果提交成功，返回的值为state
+                success: function (state) {
+                    toastr.success('修改成功');
+                },
+                error: function () {
+                    alert('error');
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>
