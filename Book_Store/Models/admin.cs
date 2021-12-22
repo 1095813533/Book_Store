@@ -9,14 +9,26 @@ namespace Book_Store.Models
     [Table("admin")]
     public partial class admin
     {
-        public int adminid { get; set; }
+        public int adminid
+        {
+            get;
+            set;
+        }
 
         [Required]
         [StringLength(20)]
-        public string adminname { get; set; }
+        public string adminname
+        {
+            get;
+            set;
+        }
 
         [Required]
         [StringLength(20)]
-        public string password { get; set; }
+        public string password
+        {
+            get;
+            set;
+        }
     }
 }

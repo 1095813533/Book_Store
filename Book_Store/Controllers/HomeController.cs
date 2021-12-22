@@ -417,10 +417,12 @@ namespace Book_Store.Controllers
         }
         public string Base64ToImage(string base64Str, string path, string imgName)
         {
-            string filename = "";//声明一个string类型的相对路径
+            //声明一个string类型的相对路径
+            string filename = "";
             //取图片的后缀格式
             string hz = base64Str.Split(',')[0].Split(';')[0].Split('/')[1];
-            string[] str = base64Str.Split(',');  //base64Str为base64完整的字符串，先处理一下得到我们所需要的字符串
+            //base64Str为base64完整的字符串，先处理一下得到我们所需要的字符串
+            string[] str = base64Str.Split(',');  
             byte[] imageBytes = Convert.FromBase64String(str[1]);
             //读入MemoryStream对象
             MemoryStream memoryStream = new MemoryStream(imageBytes, 0, imageBytes.Length);
@@ -436,7 +438,8 @@ namespace Book_Store.Controllers
             Image image = Image.FromStream(memoryStream);
             //   图片名称
             string iname = DateTime.Now.ToString("yyMMddhhmmss");
-            image.Save(imagesurl2);  // 将图片存到本地Server.MapPath("pic\\") + iname + "." + hz
+            // 将图片存到本地Server.MapPath("pic\\") + iname + "." + hz
+            image.Save(imagesurl2);  
             return filename;
         }
         public string adminbookedit()

@@ -9,28 +9,55 @@ namespace Book_Store.Models
     [Table("book")]
     public partial class book
     {
-        public int bookid { get; set; }
+        public int bookid
+        {
+            get;
+            set;
+        }
 
         [Required]
         [StringLength(20)]
-        public string bookname { get; set; }
+        public string bookname
+        {
+            get;
+            set;
+        }
 
         [Required]
         [StringLength(200)]
-        public string synopsis { get; set; }
+        public string synopsis
+        {
+            get;
+            set; }
 
         [Required]
         [StringLength(200)]
-        public string image_url { get; set; }
+        public string image_url
+        {
+            get;
+            set; }
 
-        public int stock { get; set; }
+        public int stock
+        {
+            get;
+            set; }
 
-        public double price { get; set; }
+        public double price
+        {
+            get;
+            set; }
 
         [Required]
         [StringLength(20)]
-        public string type { get; set; }
+        public string type
+        {
+            get;
+            set; }
 
-        public int salenum { get; set; }
+        public int salenum
+        {
+            get;
+            set;
+        }
     }
 }
