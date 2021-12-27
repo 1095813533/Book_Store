@@ -442,117 +442,6 @@ namespace Book_Store.Controllers
             image.Save(imagesurl2);  
             return filename;
         }
-        public string adminbookedit()
-        {
-            book_store_db bookdb = new book_store_db();
-            
-            string bookid = Request["book-id"];
-            string imgurl = Request["book-img"];
-            string bookname = Request["book-name"];
-            string synopsis = Request["book-info"];
-            string type = Request["book-type"];
-            string price = Request["book-price"];
-            string stock = Request["book-count"];
-
-            if (bookid == "")
-            {
-                //新增
-                book books = new book();
-                books.bookname = bookname;
-                books.price = Convert.ToDouble(price);
-                books.stock = Convert.ToInt32(stock);
-                books.synopsis = synopsis;
-                books.type = type;
-                var q = (bookdb.book.Select(e => e.bookid).Max() + 1).ToString();
-                books.image_url = Base64ToImage(imgurl, "../Book/", q);
-                books.salenum = 0;
-                bookdb.book.Add(books);
-                bookdb.SaveChanges();
-                return "success";
-
-            }
-            else
-            {
-                //改
-                int booksid = Convert.ToInt32(bookid);
-                var books = bookdb.book.Where(u => u.bookid == booksid).SingleOrDefault();
-                var q = bookid;
-                if(imgurl[0] == 'd')
-                    books.image_url = Base64ToImage(imgurl, "../Book/", q);
-                books.bookname = bookname;
-                books.price = Convert.ToDouble(price);
-                books.stock = Convert.ToInt32(stock);
-                books.synopsis = synopsis;
-                books.type = type;
-                try
-                {
-                    bookdb.SaveChanges();
-                }
-                catch(Exception e)
-                {
-                    return "0";
-
-                }
-
-
-            }
-            return "1";
-        }
-        public string adminbookdel()
-        {
-            book_store_db bookdb = new book_store_db();
-            string orderlist = " {\"Total\":\"0\",\"Rows\":" + Request["delete-list"] + "}";
-            JObject json1 = (JObject)JsonConvert.DeserializeObject(orderlist);
-            JArray array = (JArray)json1["Rows"];
-            foreach (var jObject in array)
-            {
-                int id = Convert.ToInt32(jObject["bookid"].ToString());
-                book books = bookdb.book.Where(r => r.bookid == id).FirstOrDefault();
-                bookdb.book.Remove(books);
-                bookdb.SaveChanges();
-            }
-            return "1";
-        }
-        public ActionResult admin_faq()
-        {
-            book_store_db bookdb = new book_store_db();
-            var feedbacks = bookdb.feedback.Select(m => m).ToList<feedback>();
-            feedbacks = feedbacks.OrderByDescending(m => m.time).ToList();
-            return View(feedbacks);
-        }
-        public ActionResult admin_order_edit()
-        {
-            return View();
-        }
-        public JsonResult adminordersearch(int limit, int offset, string orderid, string status)
-        {
-            book_store_db bookdb = new book_store_db();
-            var lstRes = new List<order>();
-            bool flag;
-            if (orderid != "" && status != "")
-            {
-                if (status == "1") flag = true;
-                else flag = false;
-                lstRes = bookdb.order.Where(s => s.orderid.Contains(orderid) && s.status == flag).Select(m => m).ToList();
-            }
-            else if (orderid == "" && status == "")
-            {
-                lstRes = bookdb.order.Select(m => m).ToList();
-            }
-            else if (orderid != "")
-            {
-                lstRes = bookdb.order.Where(s => s.orderid.Contains(orderid)).Select(m => m).ToList();
-            }
-            else
-            {
-                if (status == "1") flag = true;
-                else flag = false;
-                lstRes = bookdb.order.Where(s => s.status == flag).Select(m => m).ToList();
-            }
-            var total = lstRes.Count;
-            var rows = lstRes.Skip(offset).Take(limit).ToList();
-            return Json(new { total = total, rows = rows }, JsonRequestBehavior.AllowGet);
-        }
         public ActionResult order_page()
         {
             string orderid = Request["orderid"];
@@ -632,6 +521,117 @@ namespace Book_Store.Controllers
             bookdb.feedback.Add(fd);
             bookdb.SaveChanges();
             return "1";
+        }
+        public string adminbookedit()
+        {
+            book_store_db bookdb = new book_store_db();
+
+            string bookid = Request["book-id"];
+            string imgurl = Request["book-img"];
+            string bookname = Request["book-name"];
+            string synopsis = Request["book-info"];
+            string type = Request["book-type"];
+            string price = Request["book-price"];
+            string stock = Request["book-count"];
+
+            if (bookid == "")
+            {
+                //新增
+                book books = new book();
+                books.bookname = bookname;
+                books.price = Convert.ToDouble(price);
+                books.stock = Convert.ToInt32(stock);
+                books.synopsis = synopsis;
+                books.type = type;
+                var q = (bookdb.book.Select(e => e.bookid).Max() + 1).ToString();
+                books.image_url = Base64ToImage(imgurl, "../Book/", q);
+                books.salenum = 0;
+                bookdb.book.Add(books);
+                bookdb.SaveChanges();
+                return "success";
+
+            }
+            else
+            {
+                //改
+                int booksid = Convert.ToInt32(bookid);
+                var books = bookdb.book.Where(u => u.bookid == booksid).SingleOrDefault();
+                var q = bookid;
+                if (imgurl[0] == 'd')
+                    books.image_url = Base64ToImage(imgurl, "../Book/", q);
+                books.bookname = bookname;
+                books.price = Convert.ToDouble(price);
+                books.stock = Convert.ToInt32(stock);
+                books.synopsis = synopsis;
+                books.type = type;
+                try
+                {
+                    bookdb.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    return "0";
+
+                }
+
+
+            }
+            return "1";
+        }
+        public string adminbookdel()
+        {
+            book_store_db bookdb = new book_store_db();
+            string orderlist = " {\"Total\":\"0\",\"Rows\":" + Request["delete-list"] + "}";
+            JObject json1 = (JObject)JsonConvert.DeserializeObject(orderlist);
+            JArray array = (JArray)json1["Rows"];
+            foreach (var jObject in array)
+            {
+                int id = Convert.ToInt32(jObject["bookid"].ToString());
+                book books = bookdb.book.Where(r => r.bookid == id).FirstOrDefault();
+                bookdb.book.Remove(books);
+                bookdb.SaveChanges();
+            }
+            return "1";
+        }
+        public ActionResult admin_faq()
+        {
+            book_store_db bookdb = new book_store_db();
+            var feedbacks = bookdb.feedback.Select(m => m).ToList<feedback>();
+            feedbacks = feedbacks.OrderByDescending(m => m.time).ToList();
+            return View(feedbacks);
+        }
+        public ActionResult admin_order_edit()
+        {
+            return View();
+        }
+        public JsonResult adminordersearch(int limit, int offset, string orderid, string status)
+        {
+            book_store_db bookdb = new book_store_db();
+            var lstRes = new List<order>();
+            bool flag;
+            if (orderid != "" && status != "")
+            {
+                if (status == "1") flag = true;
+                else flag = false;
+                lstRes = bookdb.order.Where(s => s.orderid.Contains(orderid) && s.status == flag).Select(m => m).ToList();
+            }
+            else if (orderid == "" && status == "")
+            {
+                lstRes = bookdb.order.Select(m => m).ToList();
+            }
+            else if (orderid != "")
+            {
+                lstRes = bookdb.order.Where(s => s.orderid.Contains(orderid)).Select(m => m).ToList();
+            }
+            else
+            {
+                if (status == "1") flag = true;
+                else flag = false;
+                lstRes = bookdb.order.Where(s => s.status == flag).Select(m => m).ToList();
+            }
+            var total = lstRes.Count;
+            var rows = lstRes.Skip(offset).Take(limit).ToList();
+            return Json(new { total = total, rows = rows }, JsonRequestBehavior.AllowGet);
         }
         public string delivery()
         {
